@@ -1,0 +1,60 @@
+    520  aws ec2create-vpc
+  521  cd ..
+  522  cd hunter2-vpc
+  523  aws ec2 create-vpc
+  524  aws
+  525  aws ec2 create-vpc --cidr-block 10.0.0.0/16
+  526  aws ec2 create-tag --resources vpc vpc-0f7b184bc52c6d8af --tags Key=Name,Value=CLI-hunter2
+  527  aws ec2 create-tags --resources vpc vpc-0f7b184bc52c6d8af --tags Key=Name,Value=CLI-VPC-hunter2
+  528  aws ec2 create-tags --resources vpc-0f7b184bc52c6d8af --tags Key=Name,Value=CLI-VPC-hunter2
+  529  aws ec2 create-subnet --vpc-id vpc-0f7b184bc52c6d8af --cidr-block 10.1.0.0/21
+  530  aws ec2 create-subnet --vpc-id vpc-0f7b184bc52c6d8af --cidr-block 10.0.1.0/21
+  531  aws ec2 create-tags --resources subnet-02ccbc72ce3ff7288 --tags Key=Name,Value=CLI-Subnet-Public-hunter2
+  532  aws ec2 create-subnet --vpc-id vpc-0f7b184bc52c6d8af --cidr-block 10.0.2.0/21
+  533  aws ec2 create-subnet --vpc-id vpc-0f7b184bc52c6d8af --cidr-block 10.0.3.0/21
+  534  aws ec2 create-subnet --vpc-id vpc-0f7b184bc52c6d8af --cidr-block 10.0.2.0/21
+  535  aws ec2 create-subnet --vpc-id vpc-0f7b184bc52c6d8af --cidr-block 10.0.1.0/24
+  536  aws ec2 create-tags --resources subnet-002d7f9286c8c910b  --tags Key=Name,Value=hunter2-Subnet-Pub
+  537  aws ec2 create-subnet --vpc-id vpc-0f7b184bc52c6d8af --cidr-block 10.0.2.0/24
+  538  clear 
+  539  aws ec2 create-vpc --cidr-block 10.0.0.0/16
+  540  aws ec2 create-tags --resources vpc-0b72f4ea1a295c805 --tags Key=Name,Value=CLI-VPC-hunter2
+  541  aws ec2 create-subnet --vpc-id vpc-0b72f4ea1a295c805 --cidr-block 10.0.1.0/24
+  542  aws ec2 create-tags --resources subnet-0616f2a2e01903987 --tags Key=Name,Value=hunter2-Subnet-Pub
+  543  aws ec2 create-subnet --vpc-id vpc-0b72f4ea1a295c805 --cidr-block 10.0.2.0/24
+  544  aws ec2 create-tags --resources subnet-00234b4472b3c4586 --tags Key=Name,Value=hunter2-Subnet-Private
+  545  aws ec2 create-internet-gateway
+  546  aws ec2 create-tags --resources igw-00ac649c678003c7b --tags Key=Name,Value=hunter2-InternetGateway
+  547  aws ec2 attach-internet-gateway --internet-gateway-id igw-00ac649c678003c7b --vpc-id vpc-0b72f4ea1a295c805
+  548  aws ec2 allocate-adress --domain vpc
+  549  aws ec2 allocate-address --domain vpc
+  550  aws ec2 create-nat-gateway --subnet-id subnet-0616f2a2e01903987 --allocation-id eipalloc-0389fb6fa1761f6db
+  551  aws ec2 create-tags --resources nat-0112e88b53657c5e7 --tags Key=Name,Value=hunter2-NATGATEWAY
+  552  aws ec2 create-route-table --vpc-id vpc-0b72f4ea1a295c805
+  553  aws ec2 create-tags --resources rtb-0bd696e582fdf3690 --tags Key=Name,Value=hunter2-RoutePublic
+  554  aws ec2 create-route-table --vpc-id vpc-0b72f4ea1a295c805
+  555  aws ec2 create-tags --resources rtb-0c51cc7d3357d2429 --tags Key=Name,Value=hunter2-RoutePrivate
+  556  aws ec2 create-route --route-table-id rtb-0bd696e582fdf3690 --destination-cidr-block 0.0.0.0/0 -- gateway-id igw-00ac649c678003c7b
+  557  aws ec2 create-route --route-table-id rtb-0bd696e582fdf3690 --destination-cidr-block 0.0.0.0/0 -- gateway-id igw-00ac649c678003c7b
+  558  aws ec2 create-route --route-table-id rtb-0bd696e582fdf3690 --destination-cidr-block 0.0.0.0/0 --gateway-id igw-00ac649c678003c7b
+  559  aws ec2 create-route --route-table-id rtb-0c51cc7d3357d2429 --destination-cidr-block 0.0.0.0/0 --gateway-id nat-0112e88b53657c5e7 
+  560  aws ec2 associate-route-table --route-table-id rtb-0bd696e582fdf3690 --subnet-id subnet-0616f2a2e01903987
+  561  aws ec2 associate-route-table --route-table-id rtb-0c51cc7d3357d2429 --subnet-id subnet-00234b4472b3c4586
+  562  aws ec2 create-security-group --group-name hunter2-WEB-SecurityGroup --description  "Water Wall" --vpc-id vpc-0b72f4ea1a295c805 
+  563  aws ec2 create-tags --resources sg-0ce43a0400e1128fe --tags Key=Name,Value=hunter2-SecurityGroup
+  564  clear
+  565  aws ec2 authorize-security-group-ingress --group-id sg-0ce43a0400e1128fe --protocol tcp --port 22 --cidr 0.0.0.0/0
+  566  aws ec2 authorize-security-group-ingress --group-id sg-0ce43a0400e1128fe --protocol tcp --port 80 --cidr 0.0.0.0/0
+  567  aws ec2 reate-key-pair --key-name oberon1Key
+  568  aws ec2 create-key-pair --key-name oberon1Key
+  569  aws ec2 create-key-pair --key-name oberon1Key_query --query 'KeyMaterial' --output text > oberon1Key_query
+  570  car oberon1Key_query
+  571  cat oberon1Key_query
+  572  clear
+  573  aws ec2 run-instances --image-id ami-03657b56516ab7912 --count 1 --instance-type t2.micro --key-name oberon1Key_query --security-group-ids sg-0ce43a0400e1128fe --subnet-id subnet-0616f2a2e01903987 --associate-public-ip-adress 
+  574  aws ec2 run-instances --image-id ami-03657b56516ab7912 --count 1 --instance-type t2.micro --key-name oberon1Key_query --security-group-ids sg-0ce43a0400e1128fe --subnet-id subnet-0616f2a2e01903987 --associate-public-ip-adress 
+  575  aws ec2 run-instances --image-id ami-03657b56516ab7912 --count 1 --instance-type t2.micro --key-name oberon1Key_query --security-group-ids sg-0ce43a0400e1128fe --subnet-id subnet-0616f2a2e01903987 --associate-public-ip-address
+  576  aws ec2 create-tags --resources i-0abadef15215cff1d --tags Key=Name,Value=hunter2-WEBSERVER
+  577  clear
+  578  chmod 400 oberon1Key_query
+  579   ssh ec2-user@18.189.31.192 -i oberon1Key_query
